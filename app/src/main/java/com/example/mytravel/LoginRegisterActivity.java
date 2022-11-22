@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +37,9 @@ private ImageView backToFragment;
 private GoogleSignInOptions gso;
 private GoogleSignInClient gsc;
 private TextView signInText;
+private Button loginButton;
+private TextInputEditText emailField, passwordField;
+private FirebaseAuth fAuth;
 
 ImageView googleButton;
     @Override
@@ -42,10 +47,13 @@ ImageView googleButton;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
 
+        fAuth = FirebaseAuth.getInstance();
         googleButton = findViewById(R.id.googleButton);
         backToFragment = findViewById(R.id.backToFragment);
         signInText = findViewById(R.id.signInText);
-
+        loginButton = findViewById(R.id.loginButton);
+        emailField = findViewById(R.id.emailField);
+        passwordField = findViewById(R.id.passwordField);
 
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -60,6 +68,38 @@ ImageView googleButton;
         signInText.setOnClickListener(view -> {
             Intent intent = new Intent(LoginRegisterActivity.this, RegisterActivity.class);
             startActivity(intent);
+        });
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkIsCorrect();
+            }
+        });
+
+    }
+
+    private void checkIsCorrect() {
+        String email = emailField.getText().toString();
+        String password = passwordField.getText().toString();
+
+        if(email.isEmpty() || password.isEmpty())
+        {
+            Toast.makeText(this, "Podano błędny e-mail lub hasło", Toast.LENGTH_SHORT).show();
+        }
+
+        fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(LoginRegisterActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(LoginRegisterActivity.this, "Podano błędny e-mail lub hasło", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
     }

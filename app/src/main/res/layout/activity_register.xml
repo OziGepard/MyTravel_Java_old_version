@@ -82,9 +82,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                app:errorEnabled="true"
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameRegisterField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Imię"
@@ -95,9 +97,11 @@
                 android:id="@+id/nameField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:errorEnabled="true"
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastnameRegisterField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nazwisko"
@@ -110,13 +114,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:errorEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name_lastname_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailRegisterField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_emailfield"
@@ -129,13 +134,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailFieldBlock">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordRegisterField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_passwordfield"
@@ -148,15 +154,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            app:errorEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordFieldBlock">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneRegisterField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_phonefield"
@@ -167,7 +174,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/registerButton"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -16,12 +16,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.SignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class ProfileFragment extends Fragment{
     View view;
     private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
+    private FirebaseAuth fAuth;
 
 
     private Button loginOrRegisterButton, signout;
@@ -31,6 +35,7 @@ public class ProfileFragment extends Fragment{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        fAuth = FirebaseAuth.getInstance();
         loginOrRegisterButton = view.findViewById(R.id.loginOrRegisterButton);
         signout = view.findViewById(R.id.signout);
 
@@ -50,6 +55,7 @@ public class ProfileFragment extends Fragment{
         });
         signout.setOnClickListener(view -> {
             gsc.signOut();
+            fAuth.signOut();
             onResume();
 
         });
@@ -60,11 +66,19 @@ public class ProfileFragment extends Fragment{
     public void onResume() {
         super.onResume();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
+        FirebaseUser currentUser = fAuth.getCurrentUser();
         if(account != null)
         {
             loginOrRegisterButton.setVisibility(View.INVISIBLE);
             signout.setVisibility(View.VISIBLE);
             String Name = account.getDisplayName();
+            welcomeText.setText("Zalogowano jako " + Name);
+        }
+        else if(currentUser != null)
+        {
+            loginOrRegisterButton.setVisibility(View.INVISIBLE);
+            signout.setVisibility(View.VISIBLE);
+            String Name = currentUser.getDisplayName(); //TODO - DisplayName == null - jak zmienić
             welcomeText.setText("Zalogowano jako " + Name);
         }
         else
