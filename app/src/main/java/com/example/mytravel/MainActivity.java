@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        View view;
 
         context = this;
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
