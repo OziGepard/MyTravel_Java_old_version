@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1067547050599",
+    "project_id": "fir-db-52ce4",
+    "storage_bucket": "fir-db-52ce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067547050599:android:a7d1ced23da2a222108ac2",
+        "android_client_info": {
+          "package_name": "com.example.mytravel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067547050599-jk1ge97099vs4l216upso8tn01eamlu3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mytravel",
+            "certificate_hash": "2b897878d5244b8f0c3d9b10abc0116b98762ed2"
+          }
+        },
+        {
+          "client_id": "1067547050599-esn77dctcatqetcto7c8639p8sgna60b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM90iI5KiiLAj7LByJk8qUrVOVkVtdY7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1067547050599-esn77dctcatqetcto7c8639p8sgna60b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

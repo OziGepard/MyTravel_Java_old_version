@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Szukaj"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:id="@+id/home"/>
+    <item
+        android:title="Rezerwacja"
+        android:icon="@drawable/ic_baseline_home_repair_service_24"
+        android:id="@+id/reservation"/>
+    <item
+        android:title="Profil"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:id="@+id/profile"/>
+</menu>
