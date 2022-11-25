@@ -26,9 +26,8 @@ public class RegisterValidation {
     }
     public boolean emailValidation(String email)
     {
-        //TODO
-        String regex;
-        return false; // Matcher(regex, email);
+        String regex = "([A-Za-z0-9]([.][A-Za-z0-9])*){6,30}@[a-z0-9]{1,7}[.][a-z]{1,3}";
+        return Matcher(regex, email);
     }
     public boolean passwordValidation(String password)
     {

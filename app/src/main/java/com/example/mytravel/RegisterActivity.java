@@ -14,12 +14,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity {
     private ImageView backToLogin;
     private TextInputEditText nameRegsiterField, lastnameRegisterField, emailRegisterField, passwordRegisterField, phoneRegisterField;
     private Button registerButton;
     private FirebaseAuth fAuth;
+    private RegisterValidation registerValidation;
+    private String name, lastname, email, password, phonenumber;
+    private FirebaseUser user;
+    private UserProfileChangeRequest profileChangeRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +57,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void checkIsExists() {
-        RegisterValidation registerValidation = new RegisterValidation();
-        String name = nameRegsiterField.getText().toString();
-        String lastname = lastnameRegisterField.getText().toString();
-        String email = emailRegisterField.getText().toString();
-        String password = passwordRegisterField.getText().toString();
-        String phonenumber = phoneRegisterField.getText().toString();
+        registerValidation = new RegisterValidation();
+        name = nameRegsiterField.getText().toString();
+        lastname = lastnameRegisterField.getText().toString();
+        email = emailRegisterField.getText().toString();
+        password = passwordRegisterField.getText().toString();
+        phonenumber = phoneRegisterField.getText().toString();
 
         if(!registerValidation.nameValidation(name))
         {
@@ -68,12 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
             lastnameRegisterField.setError("Pole z nazwiskiem nie może:\nByć puste\nPrzekraczać 30 znaków");
             return;
         }
-        //TODO REGEX EMAIL
-//        if(!registerValidation.emailValidation(email))
-//        {
-//            emailRegisterField.setError("Pole z nazwiskiem:\nNie może być puste\nMusi zaczynać się z \nwielkiej litery");
-//            return;
-//        }
+
+        if(!registerValidation.emailValidation(email))
+        {
+            emailRegisterField.setError("Pole z e-mailem \nnie spełnia założeń");
+            return;
+        }
         if(!registerValidation.passwordValidation(password))
         {
             passwordRegisterField.setError("Pole z hasłem musi zawierać przynajmniej:\n1 dużą literę\n1 małą literę\n1 cyfrę\n1 znak specjalny [!@#$%/]\nZawierać się w przedziale 8-30 znaków\n");
@@ -89,6 +95,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name + " " + lastname).build();
+                    user.updateProfile(profileChangeRequest);
+                    System.out.println(user.getDisplayName());
                     Toast.makeText(RegisterActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -25,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -81,27 +82,26 @@ ImageView googleButton;
     private void checkIsCorrect() {
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
-
         if(email.isEmpty() || password.isEmpty())
         {
-            Toast.makeText(this, "Podano błędny e-mail lub hasło", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Podano błędny e-mail lub hasł", Toast.LENGTH_SHORT).show();
         }
+        else
+        {
 
-        fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    Toast.makeText(LoginRegisterActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                else
-                {
-                    Toast.makeText(LoginRegisterActivity.this, "Podano błędny e-mail lub hasło", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
+            fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginRegisterActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(LoginRegisterActivity.this, "Podano błędny e-mail lub hasło", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     private void SignIn()

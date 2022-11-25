@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -78,7 +76,7 @@ public class ProfileFragment extends Fragment{
         {
             loginOrRegisterButton.setVisibility(View.INVISIBLE);
             signout.setVisibility(View.VISIBLE);
-            String Name = currentUser.getDisplayName(); //TODO - DisplayName == null - jak zmienić
+            String Name = currentUser.getDisplayName();
             welcomeText.setText("Zalogowano jako " + Name);
         }
         else
