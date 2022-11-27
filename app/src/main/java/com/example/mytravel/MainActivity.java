@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // TODO Dodanie wycieczek do bazy
+    // TODO Dynamiczne wyswietlanie wycieczek
+
     public static Context getContext()
     {
         return context;
