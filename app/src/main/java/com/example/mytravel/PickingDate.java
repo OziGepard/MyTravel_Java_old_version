@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -22,14 +24,38 @@ public class PickingDate extends MainActivity {
         this.datePickerInButton = datePickerInButton;
     }
 
+
     public DatePickerDialog initDatePicker() {
         Button button = (Button) view;
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
             month = month + 1;
+
+            // Pobranie dzisiejszej daty
+            Date nowaData = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(nowaData);
+
+            //Pobranie aktualnego dnia, miesiaca, roku
+            int dzien = cal.get(Calendar.DAY_OF_MONTH);
+            int miesiac = cal.get(Calendar.MONTH) + 1;
+            int rok = cal.get(Calendar.YEAR);
+
+            //Przeksztalcenie na odpowiedni format => 22 10 2022
+            String todaysDate = makeDateString(dzien, miesiac, rok);
             String date = makeDateString(day, month, year);
+
+            //Ustawienie i pobranie daty z Buttona
             button.setText(date);
-            String dateOut = datePickerOutButton.getText().toString();
-            String dateIn = datePickerInButton.getText().toString();
+            String dateOut = datePickerOutButton.getText().toString(); // Data wyjazdu
+            String dateIn = datePickerInButton.getText().toString(); // Data powrotu
+
+            //Sprawdzenie czy data wyjazdu >= dzisiejsza data
+            if(!dateOut.isEmpty() && !datesToCompare(todaysDate, dateOut))
+            {
+                datePickerOutButton.setText(todaysDate);
+                Toast.makeText(getContext(),"Podano datę z przeszłości", Toast.LENGTH_SHORT).show();
+            }
+            //Sprawdzenie czy podana data wyjazdu >= dacie powrotu
             if (!dateOut.isEmpty() && !dateIn.isEmpty()) {
                 if (!datesToCompare(dateOut, dateIn)) {
                     datePickerInButton.setText(dateOut);
