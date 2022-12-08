@@ -2,6 +2,8 @@ package com.example.mytravel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,11 +45,15 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseFirestore db;
     private CollectionReference offersRef;
     private StorageReference storageRef;
+    private RecyclerView recyclerView;
 
     private ArrayList<String> dataObtained = new ArrayList<>();
     private String imageID;
     private String description;
+    private Bitmap imageBitmap;
     private int price;
+    private ArrayList<DataClass> dataClasses;
+    private MyAdapter myAdapter;
 
     private static final String TAG = "OffersActivity";
     private final long ONE_MEGABYTE = 1024 * 1024;
@@ -60,20 +66,31 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         offersRef = db.collection("offers");
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Dane z HomeFragment
         dataObtained = getIntent().getExtras().getStringArrayList("offersData");
 
         backToHomeFragment = findViewById(R.id.backToHomeFragment);
-        containerLayout = findViewById(R.id.containerLayout);
         backToHomeFragment.setOnClickListener(this);
 
         String city = dataObtained.get(0);
         String dateOut = dataObtained.get(1);
         String dateIn = dataObtained.get(2);
         int days = (int) howManyDays(dateOut,dateIn) + 1;
-        System.out.println(days);
         int rooms = Integer.parseInt(dataObtained.get(3).replaceAll("[\\D]", ""));
 
+
+        dataClasses = new ArrayList<>();
+        myAdapter = new MyAdapter(this,dataClasses);
+        recyclerView.setAdapter(myAdapter);
+
+
         //Pobieranie danych z bazy
+
         offersRef
         .whereEqualTo("city", city.toLowerCase())
         .get()
@@ -87,9 +104,25 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
                     price = Integer.parseInt(document.get("price_per_day").toString()) * rooms * days;
 
                     storageRef = storage.getReferenceFromUrl("gs://fir-db-52ce4.appspot.com/images/" + imageID + ".jpg");
-                    showOffer(description, price);
+
+                    storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            System.out.println("TUUUUUUUUUUUUUUUUUUUUUTAJ");
+                            imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        }
+                    });
+                    System.out.println("JEEEEEEEEEEEESTEM");
+                    DataClass dataClass = new DataClass(description, imageBitmap, price);
+                    dataClasses.add(dataClass);
+                    myAdapter.notifyItemInserted(dataClasses.size()-1);
                     Log.d(TAG, document.getId() + " => " + document.getData());
                 }
+                for(DataClass item : dataClasses)
+                {
+                    System.out.println(item.toString());
+                }
+
             }
             else
             {
@@ -113,26 +146,6 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
             System.out.println(e);
         }
         return 0;
-    }
-
-
-    private void showOffer(String description, int price) {
-        View offerView = getLayoutInflater().inflate(R.layout.dynamic_layout_offer, null, false);
-
-        ImageView offerImage = offerView.findViewById(R.id.offerImage);
-        TextView offerText = offerView.findViewById(R.id.offerText);
-        TextView offerPrice = offerView.findViewById(R.id.offerPrice);
-
-        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            offerImage.setImageBitmap(bmp);
-
-        }).addOnFailureListener(exception -> Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
-
-        offerText.setText(description);
-        offerPrice.setText("Cena: " + price);
-
-        containerLayout.addView(offerView);
     }
 
     @Override
