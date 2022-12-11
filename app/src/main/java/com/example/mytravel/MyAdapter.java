@@ -2,6 +2,7 @@ package com.example.mytravel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 
@@ -19,6 +23,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     private Context context;
     private ArrayList<DataClass> list;
+
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef;
+    private String imageID;
+    private final long ONE_MEGABYTE = 1024 * 1024;
 
     public MyAdapter(Context context, ArrayList<DataClass> list) {
         this.context = context;
@@ -35,12 +44,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.offerText.setText(list.get(position).getDescription());
-        holder.offerPrice.setText("Cena: " + list.get(position).getPrice());
-        holder.offerImage.setImageBitmap(list.get(position).getImage());
+        imageID = list.get(position).getImageID();
+        storageRef = storage.getReferenceFromUrl("gs://fir-db-52ce4.appspot.com/images/" + imageID + ".jpg");
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            holder.offerImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+        });
+
+        holder.offerTitle.setText(list.get(position).getTitle());
+        holder.offerPrice.setText("Cena: " + list.get(position).getPrice() + " zł");
 
         holder.offerLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, OfferDetailActivity.class);
+            intent.putExtra("Title", list.get(holder.getAdapterPosition()).getTitle());
+            intent.putExtra("Price", list.get(holder.getAdapterPosition()).getPrice());
+            intent.putExtra("Image", list.get(holder.getAdapterPosition()).getImageID());
+            intent.putExtra("Rooms", list.get(holder.getAdapterPosition()).getRooms());
+            intent.putExtra("DateOut", list.get(holder.getAdapterPosition()).getDateOut());
+            intent.putExtra("DateIn", list.get(holder.getAdapterPosition()).getDateIn());
+            intent.putExtra("OfferID", list.get(holder.getAdapterPosition()).getOfferID());
+            intent.putExtra("AvailableRooms", list.get(holder.getAdapterPosition()).getAvailableRooms());
             context.startActivity(intent);
         });
 
@@ -55,14 +77,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 class MyViewHolder extends RecyclerView.ViewHolder
 {
     ImageView offerImage;
-    TextView offerText, offerPrice;
+    TextView offerTitle, offerPrice;
     ConstraintLayout offerLayout;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
 
         offerImage = itemView.findViewById(R.id.offerImage);
-        offerText = itemView.findViewById(R.id.offerText);
+        offerTitle = itemView.findViewById(R.id.offerTitle);
         offerPrice = itemView.findViewById(R.id.offerPrice);
         offerLayout = itemView.findViewById(R.id.offerLayout);
     }

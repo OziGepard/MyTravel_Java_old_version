@@ -1,29 +1,56 @@
 package com.example.mytravel;
 
-import android.graphics.Bitmap;
-
 public class DataClass {
 
-    private String description;
-    private Bitmap image;
+    private String title;
+    private String imageID;
+    private String dateOut;
+    private String dateIn;
+    private String offerID;
     private int price;
+    private int rooms;
+    private int availableRooms;
 
-
-    public DataClass(String description, Bitmap image, int price) {
-        this.description = description;
-        this.image = image;
+    public DataClass(String title, String imageID, int price, int rooms,  String dateOut, String dateIn, String offerID, int availableRooms) {
+        this.title = title;
+        this.imageID = imageID;
         this.price = price;
+        this.rooms = rooms;
+        this.dateOut = dateOut;
+        this.dateIn = dateIn;
+        this.offerID = offerID;
+        this.availableRooms = availableRooms;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public String getImageID() {
+        return imageID;
+    }
+
+    public String getOfferID() {
+        return offerID;
     }
 
     public int getPrice() {
         return price;
+    }
+
+    public String getDateOut() {
+        return dateOut;
+    }
+
+    public String getDateIn() {
+        return dateIn;
+    }
+
+    public int getRooms() {
+        return rooms;
+    }
+
+    public int getAvailableRooms() {
+        return availableRooms;
     }
 }

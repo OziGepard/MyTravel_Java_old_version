@@ -1,37 +1,20 @@
 package com.example.mytravel;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -39,31 +22,27 @@ import java.util.Locale;
 public class OffersActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView backToHomeFragment;
-    private LinearLayout containerLayout;
 
-    private FirebaseStorage storage;
     private FirebaseFirestore db;
     private CollectionReference offersRef;
-    private StorageReference storageRef;
     private RecyclerView recyclerView;
 
     private ArrayList<String> dataObtained = new ArrayList<>();
     private String imageID;
-    private String description;
-    private Bitmap imageBitmap;
+    private String title;
+    private String offerID;
     private int price;
+    private int availableRooms;
     private ArrayList<DataClass> dataClasses;
     private MyAdapter myAdapter;
 
     private static final String TAG = "OffersActivity";
-    private final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected synchronized void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offers);
 
-        storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         offersRef = db.collection("offers");
 
@@ -88,7 +67,6 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
         myAdapter = new MyAdapter(this,dataClasses);
         recyclerView.setAdapter(myAdapter);
 
-
         //Pobieranie danych z bazy
 
         offersRef
@@ -99,30 +77,17 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
             {
                 for(QueryDocumentSnapshot document : task.getResult())
                 {
-                    description = document.get("description").toString();
+                    title = document.get("description").toString();
                     imageID = document.get("image").toString();
+                    offerID = document.getId();
                     price = Integer.parseInt(document.get("price_per_day").toString()) * rooms * days;
-
-                    storageRef = storage.getReferenceFromUrl("gs://fir-db-52ce4.appspot.com/images/" + imageID + ".jpg");
-
-                    storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            System.out.println("TUUUUUUUUUUUUUUUUUUUUUTAJ");
-                            imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        }
-                    });
-                    System.out.println("JEEEEEEEEEEEESTEM");
-                    DataClass dataClass = new DataClass(description, imageBitmap, price);
+                    availableRooms = Integer.parseInt(document.get("available_rooms").toString());
+                    DataClass dataClass = new DataClass(title, imageID, price, rooms, dateOut, dateIn, offerID, availableRooms);
                     dataClasses.add(dataClass);
-                    myAdapter.notifyItemInserted(dataClasses.size()-1);
+
                     Log.d(TAG, document.getId() + " => " + document.getData());
                 }
-                for(DataClass item : dataClasses)
-                {
-                    System.out.println(item.toString());
-                }
-
+                myAdapter.notifyItemInserted(dataClasses.size()-1);
             }
             else
             {
@@ -130,6 +95,8 @@ public class OffersActivity extends AppCompatActivity implements View.OnClickLis
             }
 
         });
+
+
     }
 
     private long howManyDays(String dateOut, String dateIn) {

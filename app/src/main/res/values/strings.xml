@@ -2,4 +2,8 @@
     <string name="app_name">MyTravel</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis finibus ligula eu interdum. Duis nec nisl odio. Morbi pretium imperdiet massa, eget pulvinar eros ornare sed. Pellentesque laoreet quam a efficitur congue. Praesent sem risus, tincidunt nec sapien eget, mattis pretium magna. Mauris eget ligula at erat porta feugiat quis ut justo. Etiam ultricies odio at nibh vulputate, eget aliquet metus tempus. Donec id semper enim, sit amet malesuada erat. Integer volutpat placerat arcu. Quisque quis congue tortor. Aliquam ex urna, rhoncus vel turpis eu, facilisis varius enim. Sed tortor ipsum, vulputate ut justo id, malesuada efficitur justo. Suspendisse potenti. Cras ultrices tortor quis eros pellentesque, nec tincidunt urna sodales.
+
+Sed vitae hendrerit sem, in sagittis nisl. Nullam consectetur non lorem vitae tincidunt. Praesent sed tempor ante, nec egestas ipsum. Proin maximus vehicula nulla, quis malesuada ante congue sed. In malesuada, nunc id consectetur convallis, odio lectus sagittis est, at sodales ex lacus nec urna. Quisque at vehicula ligula, a egestas felis. Integer posuere tortor vitae tincidunt sagittis. Maecenas vestibulum ex ligula, vulputate mattis augue bibendum id. Phasellus malesuada nulla interdum, mattis sem quis, fermentum libero. Morbi fermentum purus vel ultrices luctus. Nullam tincidunt neque eget est rutrum pellentesque. Fusce quis augue placerat, vehicula est eu, consectetur diam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+    </string>
 </resources>
