@@ -6,4 +6,26 @@
 
 Sed vitae hendrerit sem, in sagittis nisl. Nullam consectetur non lorem vitae tincidunt. Praesent sed tempor ante, nec egestas ipsum. Proin maximus vehicula nulla, quis malesuada ante congue sed. In malesuada, nunc id consectetur convallis, odio lectus sagittis est, at sodales ex lacus nec urna. Quisque at vehicula ligula, a egestas felis. Integer posuere tortor vitae tincidunt sagittis. Maecenas vestibulum ex ligula, vulputate mattis augue bibendum id. Phasellus malesuada nulla interdum, mattis sem quis, fermentum libero. Morbi fermentum purus vel ultrices luctus. Nullam tincidunt neque eget est rutrum pellentesque. Fusce quis augue placerat, vehicula est eu, consectetur diam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
     </string>
+    <string name="title_example_reservations">Cudowne wakacje w Hiszpanii</string>
+    <string name="description_example_reservations">Ilość pokoi: 2, Cena: 800 zł</string>
+    <string name="reservation_confirm">reservation_confirm</string>
+    <string name="reservation_cancel">reservation_cancel</string>
+    <string name="reservation_decision">reservation_decision</string>
+    <string name="add_remove_travel">Dodawanie/Usuwanie wycieczek</string>
+    <string name="edit_travel">Edycja wycieczek</string>
+    <string name="no_logged_in_info">Musisz być zalogowany, aby przeglądać zarezerwowane oferty!</string>
+    <string name="login_create_account">Zaloguj się lub utwórz konto</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="employee_panel">Panel Pracownika</string>
+    <string name="offer_image">offer_image</string>
+    <string name="offer_title">Title</string>
+    <string name="offer_price">Cena: 750zł</string>
+    <string name="back_button">back_button</string>
+    <string name="mytravel_com">MyTravel.com</string>
+    <string name="reservation_button">Rezerwuj</string>
+    <string name="date_reservation">Data wyjazdu: 23-NOV-2022 | 25-DEC-2022</string>
+    <string name="location_reservation">Miejsce wyjazdu: Piękna Hiszpania, że hoho</string>
+    <string name="rooms_reservations">Ilość pokoi:</string>
+    <string name="price_reservation">Cena do zapłaty:</string>
+    <string name="pay_button">ZAPŁAĆ</string>
 </resources>
