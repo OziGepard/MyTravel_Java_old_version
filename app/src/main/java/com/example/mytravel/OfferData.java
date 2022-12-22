@@ -1,17 +1,18 @@
 package com.example.mytravel;
 
-public class DataClass {
+public class OfferData {
 
-    private String title;
-    private String imageID;
-    private String dateOut;
-    private String dateIn;
-    private String offerID;
-    private int price;
-    private int rooms;
-    private int availableRooms;
+    private final String title;
+    private final String imageID;
+    private final String dateOut;
+    private final String dateIn;
+    private final String offerID;
+    private final String description;
+    private final int price;
+    private final int rooms;
+    private final int availableRooms;
 
-    public DataClass(String title, String imageID, int price, int rooms,  String dateOut, String dateIn, String offerID, int availableRooms) {
+    public OfferData(String title, String imageID, int price, int rooms, String dateOut, String dateIn, String offerID, int availableRooms, String description) {
         this.title = title;
         this.imageID = imageID;
         this.price = price;
@@ -20,6 +21,7 @@ public class DataClass {
         this.dateIn = dateIn;
         this.offerID = offerID;
         this.availableRooms = availableRooms;
+        this.description = description;
     }
 
     public String getTitle() {
@@ -34,16 +36,20 @@ public class DataClass {
         return offerID;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
     public String getDateOut() {
         return dateOut;
     }
 
     public String getDateIn() {
         return dateIn;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     public int getRooms() {

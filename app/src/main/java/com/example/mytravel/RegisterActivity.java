@@ -1,29 +1,24 @@
 package com.example.mytravel;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.Objects;
+
 public class RegisterActivity extends AppCompatActivity {
-    private ImageView backToLogin;
     private TextInputEditText nameRegsiterField, lastnameRegisterField, emailRegisterField, passwordRegisterField, phoneRegisterField;
-    private Button registerButton;
     private FirebaseAuth fAuth;
-    private RegisterValidation registerValidation;
-    private String name, lastname, email, password, phonenumber;
+    private String name;
+    private String lastname;
     private FirebaseUser user;
     private UserProfileChangeRequest profileChangeRequest;
 
@@ -31,38 +26,28 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        backToLogin =           findViewById(R.id.backToLogin);
+        ImageView backToLogin = findViewById(R.id.backToLogin);
         nameRegsiterField =     findViewById(R.id.nameRegisterField);
         lastnameRegisterField = findViewById(R.id.lastnameRegisterField);
         emailRegisterField =    findViewById(R.id.emailRegisterField);
         passwordRegisterField = findViewById(R.id.passwordRegisterField);
         phoneRegisterField =    findViewById(R.id.phoneRegisterField);
-        registerButton =        findViewById(R.id.registerButton);
+        Button registerButton = findViewById(R.id.registerButton);
 
         fAuth =                 FirebaseAuth.getInstance();
 
-        backToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        backToLogin.setOnClickListener(view -> onBackPressed());
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkIsExists();
-            }
-        });
+        registerButton.setOnClickListener(view -> checkIsExists());
     }
 
     private void checkIsExists() {
-        registerValidation = new RegisterValidation();
-        name = nameRegsiterField.getText().toString();
-        lastname = lastnameRegisterField.getText().toString();
-        email = emailRegisterField.getText().toString();
-        password = passwordRegisterField.getText().toString();
-        phonenumber = phoneRegisterField.getText().toString();
+        RegisterValidation registerValidation = new RegisterValidation();
+        name = Objects.requireNonNull(nameRegsiterField.getText()).toString();
+        lastname = Objects.requireNonNull(lastnameRegisterField.getText()).toString();
+        String email = Objects.requireNonNull(emailRegisterField.getText()).toString();
+        String password = Objects.requireNonNull(passwordRegisterField.getText()).toString();
+        String phonenumber = Objects.requireNonNull(phoneRegisterField.getText()).toString();
 
         if(!registerValidation.nameValidation(name))
         {
@@ -90,22 +75,19 @@ public class RegisterActivity extends AppCompatActivity {
             phoneRegisterField.setError("Pole z telefonem:\nNie może być puste\nMusi zawierać 9 cyfr");
             return;
         }
-        fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    user = FirebaseAuth.getInstance().getCurrentUser();
-                    profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name + " " + lastname).build();
-                    user.updateProfile(profileChangeRequest);
-                    System.out.println(user.getDisplayName());
-                    Toast.makeText(RegisterActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                else
-                {
-                    Toast.makeText(RegisterActivity.this, "Użytkownik o podanym e-mailu już istnieje!", Toast.LENGTH_SHORT).show();
-                }
+        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful())
+            {
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name + " " + lastname).build();
+                user.updateProfile(profileChangeRequest);
+                System.out.println(user.getDisplayName());
+                Toast.makeText(RegisterActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else
+            {
+                Toast.makeText(RegisterActivity.this, "Użytkownik o podanym e-mailu już istnieje!", Toast.LENGTH_SHORT).show();
             }
         });
     }

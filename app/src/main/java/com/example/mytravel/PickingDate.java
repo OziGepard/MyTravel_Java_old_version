@@ -8,15 +8,14 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class PickingDate extends MainActivity {
     View view;
-    private Button datePickerOutButton, datePickerInButton;
+    private final Button datePickerOutButton;
+    private final Button datePickerInButton;
 
     public PickingDate(View view, Button datePickerOutButton, Button datePickerInButton) {
         this.view = view;
@@ -105,7 +104,7 @@ public class PickingDate extends MainActivity {
             case 12:
                 return "Dec";
             default:
-                return "Jan";
+                return "ERROR";
         }
     }
 
@@ -114,6 +113,7 @@ public class PickingDate extends MainActivity {
         try {
             Date d1 = formatter.parse(dateOut);
             Date d2 = formatter.parse(dateIn);
+            assert d2 != null;
             if(d2.before(d1))
             {
                 return false;
@@ -121,7 +121,7 @@ public class PickingDate extends MainActivity {
         }
         catch(ParseException e)
         {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return true;
     }

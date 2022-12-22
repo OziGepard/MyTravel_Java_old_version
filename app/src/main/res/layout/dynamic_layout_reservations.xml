@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/offerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/darker_white"
+        android:elevation="25dp">
+
+        <TextView
+            android:id="@+id/reservationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:maxWidth="175dp"
+            android:text="@string/title_example_reservations"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/reservationInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description_example_reservations"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintStart_toStartOf="@+id/reservationTitle"
+            app:layout_constraintTop_toBottomOf="@+id/reservationTitle" />
+
+        <ImageView
+            android:id="@+id/reservationConfirm"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/reservationCancel"
+            app:layout_constraintTop_toTopOf="@+id/reservationCancel"
+            app:srcCompat="@drawable/ic_booking_confirm"
+            android:contentDescription="@string/reservation_confirm" />
+
+        <ImageView
+            android:id="@+id/reservationCancel"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/booking_cancel_icon"
+            android:contentDescription="@string/reservation_cancel" />
+
+        <ImageView
+            android:id="@+id/reservationDecision"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/reservationCancel"
+            app:layout_constraintEnd_toStartOf="@+id/reservationCancel"
+            app:layout_constraintStart_toEndOf="@+id/reservationConfirm"
+            app:layout_constraintTop_toTopOf="@+id/reservationCancel"
+            app:srcCompat="@drawable/ic_baseline_cancel_24"
+            android:contentDescription="@string/reservation_decision" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

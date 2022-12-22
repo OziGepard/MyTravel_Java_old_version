@@ -20,14 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReservationActivity extends AppCompatActivity {
+public class GetReservationActivity extends AppCompatActivity {
 
-    private ImageView backToDetail;
-    private TextView dateOutInText, destinationText, roomsText, priceText;
-    private Button payButton;
-
-    private FirebaseFirestore db;
-    private FirebaseAuth fAuth;
     private DocumentReference offerDoc;
     private CollectionReference resCol;
 
@@ -35,44 +29,49 @@ public class ReservationActivity extends AppCompatActivity {
     private String userEmail;
     private String dateOut;
     private String dateIn;
-    private int availableRooms;
+    private String title;
     private int rooms;
     private int roomsDifferenc;
-    private Map<String, Object> reservation = new HashMap<>();
+    private int price;
+    private final Map<String, Object> reservation = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-        fAuth = FirebaseAuth.getInstance();
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FirebaseUser currentUser = fAuth.getCurrentUser();
 
-        backToDetail = findViewById(R.id.backToDetail);
-        dateOutInText = findViewById(R.id.dateOutInText);
-        destinationText = findViewById(R.id.destinationText);
-        roomsText = findViewById(R.id.roomsText);
-        priceText = findViewById(R.id.priceText);
-        payButton = findViewById(R.id.payButton);
+        ImageView backToDetail = findViewById(R.id.backToDetail);
+        TextView dateOutInText = findViewById(R.id.dateOutInText);
+        TextView destinationText = findViewById(R.id.destinationText);
+        TextView roomsText = findViewById(R.id.roomsText);
+        TextView priceText = findViewById(R.id.priceText);
+        Button payButton = findViewById(R.id.payButton);
 
 
         Bundle bundle = getIntent().getExtras();
 
         offerID = bundle.getString("OfferID");
-        availableRooms = bundle.getInt("AvailableRooms");
+        int availableRooms = bundle.getInt("AvailableRooms");
         dateOut = bundle.getString("DateOut");
         dateIn = bundle.getString("DateIn");
         rooms = bundle.getInt("Rooms");
+        price = bundle.getInt("Price");
+        title = bundle.getString("Title");
+
+
         dateOutInText.setText("Data wyjazdu: " + dateOut + " - " + dateIn);
         roomsText.setText("Ilość pokoi: " + rooms);
-        destinationText.setText("Miejsce wyjazdu: " + bundle.getString("Title"));
-        priceText.setText("Cena do zapłaty: " + bundle.getInt("Price"));
+        destinationText.setText("Miejsce wyjazdu: " + title);
+        priceText.setText("Cena do zapłaty: " + price);
 
-        roomsDifferenc = availableRooms - bundle.getInt("Rooms");
+        roomsDifferenc = availableRooms - rooms;
 
         offerDoc = db.collection("offers").document(offerID);
         resCol = db.collection("reservations");
@@ -84,13 +83,9 @@ public class ReservationActivity extends AppCompatActivity {
                 Toast.makeText(this, "Musisz być zalogowany, aby dokonać rezerwacji!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else if (account != null)
-            {
-                userEmail = account.getEmail();
-            }
             else
             {
-                userEmail = currentUser.getEmail();
+                userEmail = ((account == null) ? currentUser.getEmail() : account.getEmail());
             }
             if(roomsDifferenc < 0)
             {
@@ -102,18 +97,23 @@ public class ReservationActivity extends AppCompatActivity {
             reservation.put("date_out", dateOut);
             reservation.put("date_in", dateIn);
             reservation.put("reserved_rooms", rooms);
+            reservation.put("price", price);
+            reservation.put("title", title);
+            reservation.put("is_confirmed", "");
 
             resCol.document().set(reservation);
 
             offerDoc.
                     update("available_rooms", roomsDifferenc);
-            Toast.makeText(ReservationActivity.this, "Dziękujemy za dokonanie rezerwacji!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GetReservationActivity.this, "Dziękujemy za dokonanie rezerwacji!", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(ReservationActivity.this, MainActivity.class);
+            Intent intent = new Intent(GetReservationActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
 
         });
+
+        backToDetail.setOnClickListener(view -> onBackPressed());
 
 
     }

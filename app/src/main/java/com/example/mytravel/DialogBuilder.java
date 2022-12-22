@@ -4,20 +4,15 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SearchView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class DialogBuilder extends MainActivity implements View.OnClickListener {
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private Button buttonMinusRoom, buttonMinusAdult, buttonMinusChildren, buttonPlusRoom;
-    private Button buttonPlusAdult, buttonPlusChildren, buttonCancel, buttonApply;
     private TextView roomCounter, adultCounter, childrenCounter;
-    private LayoutInflater layoutInflater;
-    private View settingsPopupView;
-    private TextView setRoomsTxt, setAdultsTxt, setChildTxt;
+    private final LayoutInflater layoutInflater;
+    private final TextView setRoomsTxt;
+    private final TextView setAdultsTxt;
+    private final TextView setChildTxt;
     public DialogBuilder(LayoutInflater layoutInflater, TextView setRoomsTxt, TextView setAdultsTxt, TextView setChildTxt) {
     this.layoutInflater = layoutInflater;
     this.setAdultsTxt = setAdultsTxt;
@@ -26,29 +21,29 @@ public class DialogBuilder extends MainActivity implements View.OnClickListener 
     }
 
     public void createNewDialogContent() {
-        dialogBuilder = new AlertDialog.Builder(getContext());
-        settingsPopupView = layoutInflater.inflate(R.layout.popup, null);
-        buttonPlusAdult = settingsPopupView.findViewById(R.id.buttonPlusAdult);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        View settingsPopupView = layoutInflater.inflate(R.layout.popup, null);
+        Button buttonPlusAdult = settingsPopupView.findViewById(R.id.buttonPlusAdult);
         buttonPlusAdult.setOnClickListener(this);
 
-        buttonPlusRoom = settingsPopupView.findViewById(R.id.buttonPlusRoom);
+        Button buttonPlusRoom = settingsPopupView.findViewById(R.id.buttonPlusRoom);
         buttonPlusRoom.setOnClickListener(this);
 
-        buttonPlusChildren = settingsPopupView.findViewById(R.id.buttonPlusChildren);
+        Button buttonPlusChildren = settingsPopupView.findViewById(R.id.buttonPlusChildren);
         buttonPlusChildren.setOnClickListener(this);
 
-        buttonMinusAdult = settingsPopupView.findViewById(R.id.buttonMinusAdult);
+        Button buttonMinusAdult = settingsPopupView.findViewById(R.id.buttonMinusAdult);
         buttonMinusAdult.setOnClickListener(this);
 
-        buttonMinusRoom = settingsPopupView.findViewById(R.id.buttonMinusRoom);
+        Button buttonMinusRoom = settingsPopupView.findViewById(R.id.buttonMinusRoom);
         buttonMinusRoom.setOnClickListener(this);
 
-        buttonMinusChildren = settingsPopupView.findViewById(R.id.buttonMinusChildren);
+        Button buttonMinusChildren = settingsPopupView.findViewById(R.id.buttonMinusChildren);
         buttonMinusChildren.setOnClickListener(this);
 
-        buttonCancel = settingsPopupView.findViewById(R.id.buttonCancel);
+        Button buttonCancel = settingsPopupView.findViewById(R.id.buttonCancel);
         buttonCancel.setOnClickListener(this);
-        buttonApply = settingsPopupView.findViewById(R.id.buttonApply);
+        Button buttonApply = settingsPopupView.findViewById(R.id.buttonApply);
         buttonApply.setOnClickListener(this);
 
         roomCounter = settingsPopupView.findViewById(R.id.roomCounter);

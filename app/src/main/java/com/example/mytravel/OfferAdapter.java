@@ -19,17 +19,14 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class OfferAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    private Context context;
-    private ArrayList<DataClass> list;
+    private final Context context;
+    private final ArrayList<OfferData> list;
 
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef;
-    private String imageID;
-    private final long ONE_MEGABYTE = 1024 * 1024;
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    public MyAdapter(Context context, ArrayList<DataClass> list) {
+    public OfferAdapter(Context context, ArrayList<OfferData> list) {
         this.context = context;
         this.list = list;
     }
@@ -44,11 +41,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        imageID = list.get(position).getImageID();
-        storageRef = storage.getReferenceFromUrl("gs://fir-db-52ce4.appspot.com/images/" + imageID + ".jpg");
-        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            holder.offerImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-        });
+        String imageID = list.get(position).getImageID();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://fir-db-52ce4.appspot.com/images/" + imageID + ".jpg");
+        long ONE_MEGABYTE = 1024 * 1024;
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> holder.offerImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length)));
 
         holder.offerTitle.setText(list.get(position).getTitle());
         holder.offerPrice.setText("Cena: " + list.get(position).getPrice() + " zł");
@@ -63,6 +59,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             intent.putExtra("DateIn", list.get(holder.getAdapterPosition()).getDateIn());
             intent.putExtra("OfferID", list.get(holder.getAdapterPosition()).getOfferID());
             intent.putExtra("AvailableRooms", list.get(holder.getAdapterPosition()).getAvailableRooms());
+            intent.putExtra("Description", list.get(holder.getAdapterPosition()).getDescription());
             context.startActivity(intent);
         });
 
