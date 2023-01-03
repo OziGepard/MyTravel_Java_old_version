@@ -23,6 +23,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/border_for_setting"
+            android:fontFamily="@font/alata"
+            android:textSize="20sp"
             android:gravity="center_horizontal|center_vertical"
             android:hint="Miejsce podróży" />
 
@@ -42,7 +44,8 @@
                 android:hint="Data Wyjazdu"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="18sp"
+                android:fontFamily="@font/alata"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -55,7 +58,8 @@
                 android:hint="Data Przyjazdu"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="18sp"
+                android:fontFamily="@font/alata"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -76,6 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="pokoje"
+                android:textSize="18sp"
+                android:fontFamily="@font/alata"
                 android:textAlignment="center" />
 
             <TextView
@@ -84,6 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="dorośli"
+                android:textSize="18sp"
+                android:fontFamily="@font/alata"
                 android:textAlignment="center" />
 
             <TextView
@@ -92,6 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="dzieci"
+                android:textSize="18sp"
+                android:fontFamily="@font/alata"
                 android:textAlignment="center" />
         </LinearLayout>
 

@@ -11,7 +11,8 @@ Sed vitae hendrerit sem, in sagittis nisl. Nullam consectetur non lorem vitae ti
     <string name="reservation_confirm">reservation_confirm</string>
     <string name="reservation_cancel">reservation_cancel</string>
     <string name="reservation_decision">reservation_decision</string>
-    <string name="add_remove_travel">Dodawanie/Usuwanie wycieczek</string>
+    <string name="add_travel">Dodawanie wycieczek</string>
+    <string name="remove_travel">Usuwanie wycieczek</string>
     <string name="edit_travel">Edycja wycieczek</string>
     <string name="no_logged_in_info">Musisz być zalogowany, aby przeglądać zarezerwowane oferty!</string>
     <string name="login_create_account">Zaloguj się lub utwórz konto</string>

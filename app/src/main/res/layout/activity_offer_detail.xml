@@ -85,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque tellus id risus venenatis, ac efficitur tortor sollicitudin. \n\nDonec rhoncus cursus sapien, vel cursus orci placerat et. Morbi tincidunt nibh nisl, vitae porttitor ante cursus ac. \n\nNunc vitae vestibulum eros. Etiam dignissim urna vitae libero dapibus, sit amet aliquet felis consequat. In et eleifend diam. \n\nDuis ipsum neque, rhoncus ut finibus at, iaculis id tortor. Morbi aliquet dui in nisi mattis dapibus. Aenean finibus, lacus ut cursus semper, dolor tellus placerat ante, ac suscipit quam quam a eros. \n\nNulla tincidunt sapien sed sapien pretium, non dignissim nibh vulputate."
                 android:textSize="18sp" />
 
             <Button

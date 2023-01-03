@@ -42,6 +42,7 @@ public class OfferAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         String imageID = list.get(position).getImageID();
+        System.out.println(imageID);
         StorageReference storageRef = storage.getReferenceFromUrl("gs://fir-db-52ce4.appspot.com/images/" + imageID + ".jpg");
         long ONE_MEGABYTE = 1024 * 1024;
         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> holder.offerImage.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length)));

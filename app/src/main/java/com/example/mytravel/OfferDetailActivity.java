@@ -31,7 +31,9 @@ public class OfferDetailActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         offerDetailTitle.setText(bundle.getString("Title"));
-        offerDetailText.setText(bundle.getString("Description"));
+        String description = bundle.getString("Description");
+        String formatedDesription = formatDescription(description);
+        offerDetailText.setText(formatedDesription);
         String imageID = bundle.getString("Image");
 
 
@@ -52,5 +54,23 @@ public class OfferDetailActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+    }
+
+    private String formatDescription(String description) {
+        String result = "";
+        int count = 0; // licznik kropek
+        for (int i = 0; i < description.length(); i++) {
+            if (description.charAt(i) == '.') {
+                count++;
+                result += '.';
+                if (count % 2 == 0) {
+                    result += "\n\n";
+                    i++;
+                }
+            } else {
+                result += description.charAt(i);
+            }
+        }
+        return result;
     }
 }

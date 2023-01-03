@@ -103,8 +103,8 @@ public class GetReservationActivity extends AppCompatActivity {
 
             resCol.document().set(reservation);
 
-            offerDoc.
-                    update("available_rooms", roomsDifferenc);
+            offerDoc.update("available_rooms", roomsDifferenc);
+
             Toast.makeText(GetReservationActivity.this, "Dziękujemy za dokonanie rezerwacji!", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(GetReservationActivity.this, MainActivity.class);

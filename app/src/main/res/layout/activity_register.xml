@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_register_background"
     tools:context=".RegisterActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/typographica"
-            android:text="MyTravel.com"
+            android:text="@string/mytravel_com"
             android:textColor="@color/white"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
