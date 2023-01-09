@@ -14,13 +14,18 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ReservationFragment extends Fragment {
@@ -58,6 +63,7 @@ public class ReservationFragment extends Fragment {
         reservationAdapter = new ReservationAdapter(this.getContext(), reservationsData);
         reservationRecyclerView.setAdapter(reservationAdapter);
 
+
         if(account == null && currentUser == null)
         {
             reservationNoLoggedIn.setVisibility(View.VISIBLE);
@@ -82,7 +88,6 @@ public class ReservationFragment extends Fragment {
 
                                 ReservationData reservation = new ReservationData(title, rooms, price, reservationID, isConfirmed);
                                 reservationsData.add(reservation);
-
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                             reservationAdapter.notifyItemInserted(reservationsData.size() - 1);

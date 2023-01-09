@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment{
 
 
     private Button loginOrRegisterButton, signout, employeePanel;
-    private TextView welcomeText;
+    private TextView welcomeText, loggedIn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment{
         loginOrRegisterButton = view.findViewById(R.id.loginOrRegisterButton);
         signout = view.findViewById(R.id.signout);
         employeePanel = view.findViewById(R.id.employeePanel);
+        loggedIn = view.findViewById(R.id.loggedIn);
 
         welcomeText = view.findViewById(R.id.welcomeText);
 
@@ -113,6 +114,7 @@ public class ProfileFragment extends Fragment{
 
     @Override
     public void onResume() {
+        //TODO - Zgłoś problem
         super.onResume();
         account = GoogleSignIn.getLastSignedInAccount(view.getContext());
         currentUser = fAuth.getCurrentUser();
@@ -121,10 +123,11 @@ public class ProfileFragment extends Fragment{
         if(account != null || currentUser != null)
         {
             loginOrRegisterButton.setVisibility(View.INVISIBLE);
+            loggedIn.setVisibility(View.VISIBLE);
             signout.setVisibility(View.VISIBLE);
             name = ((account == null) ? currentUser.getDisplayName() : account.getDisplayName());
             email = ((account == null) ? currentUser.getEmail() : account.getEmail());
-            welcomeText.setText("Zalogowano jako " + name);
+            welcomeText.setText(name);
 
             // Sprawdzanie statusu (użytkownik/pracownik) osoby zalogowanej
 
@@ -141,6 +144,7 @@ public class ProfileFragment extends Fragment{
         else
         {
             employeePanel.setVisibility(View.INVISIBLE);
+            loggedIn.setVisibility(View.INVISIBLE);
             loginOrRegisterButton.setVisibility(View.VISIBLE);
             signout.setVisibility(View.INVISIBLE);
             welcomeText.setText("");

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".NotificationActivity">
+    tools:context=".NotificationDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/backActivity"
+            android:id="@+id/backNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -43,12 +43,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notificationRecyclerView"
+    <TextView
+        android:id="@+id/notificationMessage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:textSize="18sp"
+        android:elevation="25dp"/>
 </LinearLayout>

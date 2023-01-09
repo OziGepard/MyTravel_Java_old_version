@@ -3,26 +3,25 @@ package com.example.mytravel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.mytravel.databinding.ActivityEmployeePanelBinding;
-import com.example.mytravel.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +37,8 @@ public class EmployeePanelActivity extends AppCompatActivity {
     StorageReference storageReference;
     private final Map<String, Object> offer = new HashMap<>();
     private ProgressDialog progressDialog;
-    private CollectionReference offerCol;
+    private ArrayList<EmployeeData> employeeOffersData;
+    private EmployeeAdapter employeeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,16 @@ public class EmployeePanelActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference offersRef = db.collection("offers");
 
-        binding.addImage.setOnClickListener(view -> {
+        RecyclerView employeeRecyclerView = binding.employeeRecyclerView;
+        employeeRecyclerView.setHasFixedSize(true);
+        employeeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        employeeOffersData = new ArrayList<>();
+        employeeAdapter = new EmployeeAdapter(this, employeeOffersData);
+        employeeRecyclerView.setAdapter(employeeAdapter);
+
+
+        binding.addImage.setOnClickListener(view -> {
             selectImage();
 
         });
@@ -69,12 +77,32 @@ public class EmployeePanelActivity extends AppCompatActivity {
                 offer.put("title", binding.titleTravel.getText().toString());
 
                 offersRef.document().set(offer);
+
+                Toast.makeText(this, "Oferta została dodana", Toast.LENGTH_SHORT).show();
             }
             else
             {
                 Toast.makeText(this, "Uzupełnij brakujące informacje!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        offersRef
+            .get()
+            .addOnCompleteListener(task -> {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot document : task.getResult())
+                    {
+                        String title = document.get("title").toString();
+                        String ID = document.getId();
+
+                        EmployeeData employeeData = new EmployeeData(title, ID);
+
+                        employeeOffersData.add(employeeData);
+                    }
+                    employeeAdapter.notifyItemInserted(employeeOffersData.size() - 1);
+                }
+            });
     }
 
     private Boolean checkIsCorrect() {
@@ -121,6 +149,10 @@ public class EmployeePanelActivity extends AppCompatActivity {
                     if(progressDialog.isShowing())
                     {
                         progressDialog.dismiss();
+                        finish();
+                        overridePendingTransition(0, 0);
+                        startActivity(getIntent());
+                        overridePendingTransition(0, 0);
                     }
                 }).addOnFailureListener(e -> {
                     if(progressDialog.isShowing())
@@ -149,7 +181,6 @@ public class EmployeePanelActivity extends AppCompatActivity {
         if(requestCode == 170 && data != null && data.getData() != null){
             imageUri = data.getData();
             binding.imageOfPlace.setImageURI(imageUri);
-            System.out.println(binding.imageOfPlace.getDrawable());
         }
     }
 }

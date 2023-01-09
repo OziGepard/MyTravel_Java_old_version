@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/fragmentlayout"
+    android:background="@drawable/profile_background"
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
     <Button
         android:id="@+id/loginOrRegisterButton"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_create_account"
@@ -26,21 +27,32 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="236dp"
         android:text="@string/logout"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/loggedIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zalogowano jako:"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/welcomeText"
+        app:layout_constraintEnd_toEndOf="@+id/welcomeText"
+        app:layout_constraintStart_toStartOf="@+id/welcomeText" />
 
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="Patryk Rozgwiazda"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -3,6 +3,7 @@ package com.example.mytravel;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
     View view;
@@ -48,9 +65,70 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         popupLayout.setOnClickListener(this);
         searchButton.setOnClickListener(this);
 
-
-
+        isUpdated();
         return view;
+    }
+
+    private void isUpdated() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference updateRef = db.collection("update").document("dateOfUpdate");
+
+        updateRef.get().addOnCompleteListener(task -> {
+            DocumentSnapshot documentSnapshot = task.getResult();
+
+            String date = documentSnapshot.get("date").toString();
+            LocalDate todaysDate = LocalDate.now();
+
+            CollectionReference resRef = db.collection("reservations");
+            CollectionReference offerRef = db.collection("offers");
+
+            //Jeżeli jest cośinnego niżdzisiejsza data
+            if(!date.equals(todaysDate.toString()))
+            {
+                //Zaktualizuj date w update
+                updateRef.update("date", todaysDate.toString());
+
+
+                //Sprawdzanie wszystkich rezerwacji w bazie
+                resRef
+                        .get()
+                        .addOnCompleteListener(task1 -> {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+                           if(task1.isSuccessful())
+                           {
+                               for(QueryDocumentSnapshot document : task1.getResult())
+                               {
+                                   String dateIn = document.get("date_in").toString();
+                                   try {
+                                       //Pobranie daty z bazy i zapisanie do Date
+                                       Date travelEnded = formatter.parse(dateIn);
+                                       //Zapisanie do Date dzisiejszej daty
+                                       Date convertedDate = Date.from(todaysDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                                       //Jeżeli data wyjazdu jest wcześniej niż dzisiejsza data to usuń rezerwację
+                                       //i zwróć zarezerwowane miejsca
+                                       if(travelEnded.compareTo(convertedDate) < 0)
+                                       {
+                                           //Aktualizowanie ilości wolnych pokoi
+                                           int reservedRooms = Integer.parseInt(document.get("reserved_rooms").toString());
+                                           String ID = document.get("offer_ID").toString();
+                                           offerRef.document(ID).get().addOnCompleteListener(task2 -> {
+                                               DocumentSnapshot documentInfo = task2.getResult();
+
+                                               int availableRooms = Integer.parseInt(documentInfo.get("available_rooms").toString());
+                                               offerRef.document(ID).update("available_rooms", availableRooms + reservedRooms);
+                                           });
+
+                                           resRef.document(document.getId()).delete();
+                                       }
+                                   } catch (ParseException e) {
+                                       e.printStackTrace();
+                                   }
+                               }
+                           }
+                        });
+            }
+        });
     }
 
     @Override

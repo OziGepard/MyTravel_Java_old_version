@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -22,12 +22,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationHolder> 
     private final Context context;
     private final ArrayList<ReservationData> list;
     private final CollectionReference resRef;
+    private final CollectionReference offerRef;
 
     public ReservationAdapter(Context context, ArrayList<ReservationData> list) {
         this.context = context;
         this.list = list;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         this.resRef = db.collection("reservations");
+        this.offerRef = db.collection("offers");
     }
 
     @NonNull
@@ -42,10 +44,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationHolder> 
 
         int rooms = list.get(holder.getAdapterPosition()).getRooms();
         int price = list.get(holder.getAdapterPosition()).getPrice();
+        String offerTitle = list.get(holder.getAdapterPosition()).getTitle();
         String isConfirmed = list.get(holder.getAdapterPosition()).getIsConfirmed();
-        System.out.println("isConfirmed: " + isConfirmed);
 
-        holder.reservationTitle.setText(list.get(holder.getAdapterPosition()).getTitle());
+        holder.reservationTitle.setText(offerTitle);
         holder.reservationInfo.setText("Ilość pokoi: " + rooms + ", Cena: " + price);
 
         if(isConfirmed.equals("true") || isConfirmed.equals("false"))
@@ -64,35 +66,50 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationHolder> 
         }
 
         holder.reservationConfirm.setOnClickListener(view -> {
-            // TODO : klikniecie na odwolanie rezerwacji powoduje
-            //  usuniecie jej z bazy - drawable/cancel może zostac
-            //  przy następnym odświeżeniu rezerwacja dopiero zniknie
             String reservationID = list.get(holder.getAdapterPosition()).getReservationID();
-            DocumentReference docRef = resRef.document(reservationID);
-            docRef.
-                    update("is_confirmed", true);
+            resRef.document(reservationID).update("is_confirmed", true);
             Toast.makeText(context, "Rezerwacja została potwierdzona!", Toast.LENGTH_SHORT).show();
             holder.reservationConfirm.setVisibility(View.INVISIBLE);
             holder.reservationCancel.setVisibility(View.INVISIBLE);
             holder.reservationDecision.setImageResource(R.drawable.ic_baseline_check_circle_24);
             holder.reservationDecision.setVisibility(View.VISIBLE);
-
-
-
         });
         holder.reservationCancel.setOnClickListener(view -> {
             String reservationID = list.get(holder.getAdapterPosition()).getReservationID();
-            DocumentReference docRef = resRef.document(reservationID);
-            docRef.
-                    update("is_confirmed", false);
+            resRef.document(reservationID).update("is_confirmed", false);
             Toast.makeText(context, "Rezerwacja została odwołana!", Toast.LENGTH_SHORT).show();
             holder.reservationConfirm.setVisibility(View.INVISIBLE);
             holder.reservationCancel.setVisibility(View.INVISIBLE);
             holder.reservationDecision.setImageResource(R.drawable.ic_baseline_cancel_24);
             holder.reservationDecision.setVisibility(View.VISIBLE);
+
+            resRef.document(reservationID).get().addOnCompleteListener(task -> {
+                DocumentSnapshot document = task.getResult();
+                String email = document.get("user_email").toString();
+                String offerID = document.get("offer_ID").toString();
+
+                cancelNotification(offerTitle, email);
+
+                offerRef.document(offerID).get().addOnCompleteListener(task1 -> {
+                    DocumentSnapshot documentUpdate = task1.getResult();
+                    int availableRooms = Integer.parseInt(documentUpdate.get("available_rooms").toString());
+
+                    offerRef.document(offerID).update("available_rooms", availableRooms + rooms);
+                    resRef.document(reservationID).delete();
+                });
+            });
         });
 
 
+    }
+
+    private void cancelNotification(String offerTitle, String email) {
+        NotificationActivity notificationActivity = new NotificationActivity();
+
+        String title = context.getString(R.string.offer_cancel_title);
+        String message = context.getString(R.string.offer_cancel_notification_p1) + offerTitle + context.getString(R.string.offer_cancel_notification_p2);
+
+        notificationActivity.createNotification(title, message, email);
     }
 
 

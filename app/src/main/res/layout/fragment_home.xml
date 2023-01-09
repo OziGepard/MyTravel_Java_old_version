@@ -111,7 +111,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="Wyszukaj"
-            android:textColor="@color/black" />
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:background="@drawable/registration_background"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

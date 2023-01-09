@@ -35,6 +35,8 @@ public class GetReservationActivity extends AppCompatActivity {
     private int price;
     private final Map<String, Object> reservation = new HashMap<>();
 
+    private NotificationActivity notificationActivity = new NotificationActivity();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +108,11 @@ public class GetReservationActivity extends AppCompatActivity {
             offerDoc.update("available_rooms", roomsDifferenc);
 
             Toast.makeText(GetReservationActivity.this, "Dziękujemy za dokonanie rezerwacji!", Toast.LENGTH_SHORT).show();
+
+            String title = getResources().getString(R.string.making_reservation_title);
+            String message =  getResources().getString(R.string.making_reservation_notification_p1) + title + getResources().getString(R.string.making_reservation_notification_p2);
+
+            notificationActivity.createNotification(title, message, userEmail);
 
             Intent intent = new Intent(GetReservationActivity.this, MainActivity.class);
             startActivity(intent);

@@ -16,24 +16,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:fontFamily="@font/alata"
-                android:text="Dodawanie wycieczek"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@drawable/border_for_setting"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/alata"
+                    android:text="Dodawanie wycieczek"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -150,8 +151,35 @@
                     android:layout_marginEnd="64dp"
                     android:fontFamily="@font/alata"
                     android:text="Dodaj ofertę"
+                    android:layout_marginBottom="8dp"
                     android:textSize="18sp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:background="@drawable/border_for_setting"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deleteOfferText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/alata"
+                    android:text="Usuwanie wycieczek"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/employeeRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
             </LinearLayout>
 
         </LinearLayout>

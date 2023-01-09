@@ -3,6 +3,7 @@ package com.example.mytravel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     private TextInputEditText emailField, passwordField;
     private FirebaseAuth fAuth;
     private CollectionReference employeesRef;
+    private TextView forgotPassword;
 
     private final ArrayList<String> employees = new ArrayList<>();
 
@@ -54,6 +56,12 @@ public class LoginRegisterActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.loginButton);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
+        forgotPassword = findViewById(R.id.forgotPassword);
+
+        forgotPassword.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginRegisterActivity.this, ReceivePasswordActivity.class);
+            startActivity(intent);
+        });
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
