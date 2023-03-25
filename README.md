@@ -8,7 +8,10 @@ A mobile travel agency application developed for Android. Its main tasks are:
 - Displaying all available trips that meet the user's criteria that are in the FireBase database
 - Displaying information about a given trip
 - Ability to make reservations that are then saved in the FireBase database
+- Ability to confirm or cancel a reservation
+- Notifications of made or upcoming bookings
 - Ability to create a user account using FireBase Auth in two different ways (Google Auth / Built-in registration form)
+- Ability to reset your account password via email
 - Adding / Deleting / Editing tours by an employee
 
 # Presentation:
