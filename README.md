@@ -1,7 +1,7 @@
 # MyTravel - old version in Java
 You can read all the detailed information about the project from this attachment:
   
-  [My_Travel_Raport.pdf](https://github.com/OziGepard/MyTravel_Java_old_version/files/11068327/My_Travel_Raport.pdf)
+  [My_Travel_Raport.pdf](https://github.com/OziGepard/MyTravel_Java_old_version/files/11068327/My_Travel_Raport.pdf) (PL-pl)
 
 A mobile travel agency application developed for Android. Its main tasks are: 
 
